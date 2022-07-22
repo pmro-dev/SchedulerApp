@@ -1,0 +1,40 @@
+﻿@model SchedulerApp.Models.ViewModels.RegisterViewModel
+
+<h2>Sign Up</h2>
+
+<div class="form-group">
+	<form method="post" asp-action="Register" asp-controller="Account">
+		<div asp-validation-summary="All"></div>
+			<div class="form-group row">
+				<label asp-for="Name"></label>
+				<input asp-for="Name" class="form-control" />
+				<span asp-validation-for="Name" class="text-danger"></span>
+			</div>
+			<div class="form-group row">
+				<label asp-for="Email"></label>
+				<input asp-for="Email" class="form-control" />
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+			<div class="form-group row">
+				<label asp-for="Password"></label>
+				<input asp-for="Password" class="form-control" />
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+			<div class="form-group row">
+				<label asp-for="ConfirmPassword"></label>
+				<input asp-for="ConfirmPassword" class="form-control" />
+				<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+			</div>
+			<div class="form-group row">
+				<label asp-for="RoleName"></label>
+				<select asp-for="RoleName" asp-items="@SchedulerApp.Utility.Helper.GetRolesForDropDown()" class="form-control"></select>
+				<span asp-validation-for="RoleName" class="text-danger"></span>
+			</div>
+			<input type="submit" class="btn btn-success" value="Register" />
+	</form>
+
+</div>
+
+@section Scripts{
+	<partial name="_ValidationScriptsPartial" />
+}

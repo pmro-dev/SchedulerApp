@@ -1,0 +1,21 @@
+﻿@inject Microsoft.AspNetCore.Identity.SignInManager<SchedulerApp.Models.ApplicationUser> signInManager
+
+@if(signInManager.IsSignedIn(User)){
+
+	<form method="post" asp-action="Logoff" asp-controller="Account" id="logoutForm">
+		<ul class="nav navbar-nav">
+			<li class="text-white">Hello, @User.Identity.Name</li>
+			<li class="nav-link text-white"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+		</ul>
+	</form>
+
+} else {
+	<ul class="nav navbar-nav text-white">
+		<li class="nav-item">
+			<a class="nav-link text-white" asp-action="Login" asp-controller="Account">Sign In</a>
+		</li>
+		<li class="nav-item text-white">
+			<a class="nav-link text-white" asp-action="Register" asp-controller="Account">Sign Up</a>
+		</li>
+	</ul>
+}
