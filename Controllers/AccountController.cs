@@ -35,7 +35,7 @@ namespace SchedulerApp.Controllers
                 var result = await _signInManager.PasswordSignInAsync(viewModel.Email, viewModel.Password, viewModel.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Index","AppointmentController");
                 }
 
                 ModelState.AddModelError("", "Invalid login attempt");
