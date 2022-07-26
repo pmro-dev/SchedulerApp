@@ -1,0 +1,24 @@
+﻿@model SchedulerApp.Models.ViewModels.DoctorVM
+
+<div class="row">
+	<div class="container">
+		@if(User.IsInRole(SchedulerApp.Utility.Helper.Admin)) 
+		{
+			<div class="form-group col-2">
+				<label>Select Doctor</label>
+
+			@*
+				option #1 
+				<select class="form-control" asp-items="@ViewBag.DoctorsList"></select>
+			*@
+
+				@* option #2 *@
+				<select class="form-control">
+					@foreach (var person in (ViewBag.DoctorsList as IEnumerable<SelectListItem>)) {
+						<option value="SELECT" data-description="LONG">@person.Text</option>
+					}
+				</select>
+			</div>
+		}
+	</div>
+</div>

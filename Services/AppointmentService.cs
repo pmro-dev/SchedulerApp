@@ -1,8 +1,11 @@
-﻿using SchedulerApp.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using SchedulerApp.Models;
 using SchedulerApp.Models.ViewModels;
 using SchedulerApp.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace SchedulerApp.Services
 {
@@ -22,6 +25,27 @@ namespace SchedulerApp.Services
                            {
                                Id = user.Id,
                                Name = user.Name
+                           }
+                           ).ToList();
+
+            return doctors;
+        }
+
+        public IEnumerable<SelectListItem> GetDoctorsSelectListItem()
+        {
+            //var doctors = _db.Users.Select(user => new SelectListItem
+            //{
+            //    Text = user.Name,
+            //    Value = user.Id
+            //}).Where();
+
+            var doctors = (from user in _db.Users
+                           join userRoles in _db.UserRoles on user.Id equals userRoles.UserId
+                           join roles in _db.Roles.Where(x => x.Name == Helper.Doctor) on userRoles.RoleId equals roles.Id
+                           select new SelectListItem
+                           {
+                               Text = new StringBuilder(new String(user.Name + " " + roles.Name)).ToString(),
+                               Value = user.Id
                            }
                            ).ToList();
 

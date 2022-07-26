@@ -1,4 +1,5 @@
-﻿using SchedulerApp.Models.ViewModels;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using SchedulerApp.Models.ViewModels;
 using System.Collections.Generic;
 
 namespace SchedulerApp.Services
@@ -7,6 +8,7 @@ namespace SchedulerApp.Services
     {
         public List<DoctorVM> GetDoctorsList();
         public List<PatientVM> GetPatientsList();
+        public IEnumerable<SelectListItem> GetDoctorsSelectListItem();
 
     }
 }

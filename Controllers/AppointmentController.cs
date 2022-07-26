@@ -13,7 +13,8 @@ namespace SchedulerApp.Controllers
         }
         public IActionResult Index()
         {
-            _appointmentService.GetDoctorsList();
+           //ViewBag.DoctorsList =  _appointmentService.GetDoctorsList();
+           ViewBag.DoctorsList =  _appointmentService.GetDoctorsSelectListItem();
             return View();
         }
     }
