@@ -31,6 +31,22 @@ namespace SchedulerApp.Services
             return doctors;
         }
 
+        public List<PatientVM> GetPatientsList()
+        {
+            var patients = (from user in _db.Users
+                            join userRoles in _db.UserRoles on user.Id equals userRoles.UserId
+                            join roles in _db.Roles.Where(x => x.Name == Helper.Patient) on userRoles.RoleId equals roles.Id
+                            select new PatientVM
+                            {
+                                Id = user.Id,
+                                Name = user.Name
+                            }
+                           ).ToList();
+
+            return patients;
+        }
+
+
         public IEnumerable<SelectListItem> GetDoctorsSelectListItem()
         {
             //var doctors = _db.Users.Select(user => new SelectListItem
@@ -52,15 +68,15 @@ namespace SchedulerApp.Services
             return doctors;
         }
 
-        public List<PatientVM> GetPatientsList()
+        public IEnumerable<SelectListItem> GetPatientsSelectListItem()
         {
             var patients = (from user in _db.Users
                            join userRoles in _db.UserRoles on user.Id equals userRoles.UserId
-                           join roles in _db.Roles.Where(x => x.Name == Helper.Patient) on userRoles.RoleId equals roles.Id
-                           select new PatientVM
+                           join roles in _db.Roles.Where(x => x.Name == Helper.Doctor) on userRoles.RoleId equals roles.Id
+                           select new SelectListItem
                            {
-                               Id = user.Id,
-                               Name = user.Name
+                               Text = new StringBuilder(new String(user.Name + " " + roles.Name)).ToString(),
+                               Value = user.Id
                            }
                            ).ToList();
 

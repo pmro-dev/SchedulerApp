@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SchedulerApp.Services;
+using SchedulerApp.Utility;
 
 namespace SchedulerApp.Controllers
 {
@@ -15,6 +16,9 @@ namespace SchedulerApp.Controllers
         {
            //ViewBag.DoctorsList =  _appointmentService.GetDoctorsList();
            ViewBag.DoctorsList =  _appointmentService.GetDoctorsSelectListItem();
+           ViewBag.PatientsList =  _appointmentService.GetPatientsSelectListItem();
+           ViewBag.Duration = Helper.GetTimeDropDown();
+
             return View();
         }
     }

@@ -9,6 +9,7 @@ namespace SchedulerApp.Services
         public List<DoctorVM> GetDoctorsList();
         public List<PatientVM> GetPatientsList();
         public IEnumerable<SelectListItem> GetDoctorsSelectListItem();
+        public IEnumerable<SelectListItem> GetPatientsSelectListItem();
 
     }
 }
