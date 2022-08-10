@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SchedulerApp.Services
 {
@@ -81,6 +82,38 @@ namespace SchedulerApp.Services
                            ).ToList();
 
             return patients;
+        }
+
+        public async Task<int> AddOrUpdate(AppointmentViewModel appointmentVM)
+        {
+            var startDate = DateTime.Parse(appointmentVM.StartDate.ToString());
+            var endDate = DateTime.Parse(appointmentVM.StartDate.AddMinutes(Convert.ToDouble(appointmentVM.Duration)).ToString());
+
+            if (appointmentVM != null && appointmentVM.Id > 0)
+            {
+                // UPDATE
+                return 1;
+            }
+            else
+            {
+                // CREATE
+                Appointment appointment = new Appointment()
+                {
+                    Title = appointmentVM.Title,
+                    Description = appointmentVM.Description,
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    Duration = appointmentVM.Duration,
+                    DoctorId = appointmentVM.DoctorId,
+                    PatientId = appointmentVM.PatientId,
+                    IsDoctorApproved = appointmentVM.IsDoctorApproved,
+                    AdminId = appointmentVM.AdminId,
+                };
+
+                _db.Appointments.Add(appointment);
+                await _db.SaveChangesAsync();
+                return 2;
+            }
         }
     }
 }

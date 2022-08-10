@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using SchedulerApp.Models.ViewModels;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SchedulerApp.Services
 {
@@ -10,6 +11,8 @@ namespace SchedulerApp.Services
         public List<PatientVM> GetPatientsList();
         public IEnumerable<SelectListItem> GetDoctorsSelectListItem();
         public IEnumerable<SelectListItem> GetPatientsSelectListItem();
+
+        public Task<int> AddOrUpdate(AppointmentViewModel appointmentVM);
 
     }
 }

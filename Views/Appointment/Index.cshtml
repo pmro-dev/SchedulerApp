@@ -13,9 +13,9 @@
 			*@
 
 				@* option #2 *@
-				<select class="form-control">
-					@foreach (var person in (ViewBag.DoctorsList as IEnumerable<SelectListItem>)) {
-						<option value="SELECT" data-description="LONG">@person.Text</option>
+				<select class="form-control" id="doctorId">
+					@foreach (var doctor in (ViewBag.DoctorsList as IEnumerable<SelectListItem>)) {
+						<option value="SELECT" data-description="LONG">@doctor.Text</option>
 					}
 				</select>
 			</div>
