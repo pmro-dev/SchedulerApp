@@ -115,5 +115,41 @@ namespace SchedulerApp.Services
                 return 2;
             }
         }
+
+        public List<AppointmentViewModel> DoctorsEventsById(string doctorId)
+        {
+            var doctorEvents = (from appointments in _db.Appointments.Where(x => x.DoctorId == doctorId).ToList()
+                                select new AppointmentViewModel
+                                {
+                                    Id = appointments.Id,
+                                    Title = appointments.Title,
+                                    Description = appointments.Description,
+                                    StartDate = appointments.StartDate,
+                                    EndDate = appointments.EndDate,
+                                    Duration = appointments.Duration,
+                                    IsDoctorApproved = appointments.IsDoctorApproved
+                                }
+               ).ToList();
+
+            return doctorEvents;
+        }
+
+        public List<AppointmentViewModel> PatientsEventsById(string patientId)
+        {
+            var patientEvents = (from appointments in _db.Appointments.Where(x => x.PatientId == patientId).ToList()
+                                select new AppointmentViewModel
+                                {
+                                    Id = appointments.Id,
+                                    Title = appointments.Title,
+                                    Description = appointments.Description,
+                                    StartDate = appointments.StartDate,
+                                    EndDate = appointments.EndDate,
+                                    Duration = appointments.Duration,
+                                    IsDoctorApproved = appointments.IsDoctorApproved
+                                }
+               ).ToList();
+
+            return patientEvents;
+        }
     }
 }
