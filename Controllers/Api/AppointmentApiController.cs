@@ -5,6 +5,7 @@ using System.Security.Claims;
 using SchedulerApp.Models.ViewModels;
 using SchedulerApp.Utility;
 using System;
+using System.Collections.Generic;
 
 namespace SchedulerApp.Controllers.Api
 {
@@ -50,6 +51,39 @@ namespace SchedulerApp.Controllers.Api
                 commonResponse.status = Helper.failure_code;
             }
             return View();
+        }
+
+        [HttpGet]
+        [Route("GetCalendarData")]
+        public IActionResult GetCalendarData(string userId)
+        {
+            CommonResponse <List<AppointmentViewModel>> commonResponse = new CommonResponse <List<AppointmentViewModel>>();
+
+            try
+            {
+                if (role == Helper.Doctor)
+                {
+                    commonResponse.dataenum = _appointmentService.DoctorsEventsById(loginUserId);
+                    commonResponse.status = Helper.success_code;
+                }
+                else if (role == Helper.Patient)
+                {
+                    commonResponse.dataenum = _appointmentService.PatientsEventsById(loginUserId);
+                    commonResponse.status = Helper.success_code;
+                }
+                else
+                {
+                    commonResponse.dataenum = _appointmentService.DoctorsEventsById(userId);
+                    commonResponse.status = Helper.success_code;
+                }
+            } 
+            catch(Exception e)
+            {
+                commonResponse.status = Helper.failure_code;
+                commonResponse.message = e.Message;
+            }
+
+            return Ok(commonResponse);
         }
     }
 }
