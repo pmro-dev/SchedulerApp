@@ -18,48 +18,59 @@ function InitializeCalendar() {
         if (calendarEl != null) {
 
             calendar = new FullCalendar.Calendar(calendarEl,
-
                 {
-
                     initialView: 'dayGridMonth',
 
                     headerToolbar: {
-
                         left: 'prev,next,today',
-
                         center: 'title',
-
                         right: 'dayGridMonth,timeGridWeek,timeGridDay'
-
                     },
 
                     selectable: true,
-
                     editable: false,
 
                     select: function (event) {
-
                         onShowModal(event, null);
+                    },
 
+                    events: function (fetchInfo, successCallback, failureCallback) {
+                        $.ajax({
+                            url: routeURL + '/api/Appointment/GetCalendarData?userId=' + $("#doctorId").val(),
+                            type: 'GET',
+                            dataType: 'JSON',
+                            success: function (response) {
+                                var eventsDataCollection[];
+                                if (response.status === 1) {
+                                    $.each(response.dataenum, function (iterator, eventObj) {
+                                        eventsDataCollection.push({
+                                            title: eventObj.title,
+                                            description: eventObj.description,
+                                            start: eventObj.startDate,
+                                            end: eventObj.endDate,
+                                            backgroundColor: eventObj.isDoctorApproved ? "#28a745" : "#dc3545",
+                                            textColor: "white",
+                                            id: eventObj.id
+                                        });
+                                    });
+                                }
+                                successCallback(eventsDataCollection);
+                            },
+                            error: function (xhr) {
+                                $.notify("Error", "error");
+                            }
+                        });
                     }
-
-                }
-
-            );
-
+                });
             calendar.render();
-
         }
-
     }
 
     catch (e) {
-
         alert(e);
-
     }
-
 }
+
 
 function onShowModal(obj, isEventDetail) {
 
