@@ -34,13 +34,15 @@ function InitializeCalendar() {
                         onShowModal(event, null);
                     },
 
+                    eventDisplay: 'block',
+
                     events: function (fetchInfo, successCallback, failureCallback) {
                         $.ajax({
                             url: routeURL + '/api/Appointment/GetCalendarData?userId=' + $("#doctorId").val(),
                             type: 'GET',
                             dataType: 'JSON',
                             success: function (response) {
-                                var eventsDataCollection[];
+                                var eventsDataCollection = [];
                                 if (response.status === 1) {
                                     $.each(response.dataenum, function (iterator, eventObj) {
                                         eventsDataCollection.push({
@@ -93,7 +95,7 @@ function onSubmiteForm() {
             PatientId: $("#patientId").val()
         };
 
-        #.ajax({
+        $.ajax({
             url: routeURL + '/api/Appointment/SaveCalendarData',
             type: 'POST',
             data: JSON.stringify(requestData),
