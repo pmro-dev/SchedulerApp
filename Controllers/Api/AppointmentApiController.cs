@@ -6,6 +6,7 @@ using SchedulerApp.Models.ViewModels;
 using SchedulerApp.Utility;
 using System;
 using System.Collections.Generic;
+using SchedulerApp.Models;
 
 namespace SchedulerApp.Controllers.Api
 {
@@ -50,12 +51,13 @@ namespace SchedulerApp.Controllers.Api
                 commonResponse.message = e.Message;
                 commonResponse.status = Helper.failure_code;
             }
-            return View();
+            //return View();
+            return Ok(commonResponse);
         }
 
         [HttpGet]
         [Route("GetCalendarData")]
-        public IActionResult GetCalendarData(string userId)
+        public IActionResult GetCalendarData(string doctorId)
         {
             CommonResponse <List<AppointmentViewModel>> commonResponse = new CommonResponse <List<AppointmentViewModel>>();
 
@@ -73,7 +75,7 @@ namespace SchedulerApp.Controllers.Api
                 }
                 else
                 {
-                    commonResponse.dataenum = _appointmentService.DoctorsEventsById(userId);
+                    commonResponse.dataenum = _appointmentService.DoctorsEventsById(doctorId);
                     commonResponse.status = Helper.success_code;
                 }
             } 
@@ -85,5 +87,26 @@ namespace SchedulerApp.Controllers.Api
 
             return Ok(commonResponse);
         }
+
+        [HttpGet]
+        [Route("GetCalendarDataById/{id}")]
+        public IActionResult GetCalendarDataById(int id)
+        {
+            CommonResponse<AppointmentViewModel> commonResponse = new CommonResponse<AppointmentViewModel>();
+            try
+            {
+
+                commonResponse.dataenum = _appointmentService.GetById(id);
+                commonResponse.status = Helper.success_code;
+
+            }
+            catch (Exception e)
+            {
+                commonResponse.message = e.Message;
+                commonResponse.status = Helper.failure_code;
+            }
+            return Ok(commonResponse);
+        }
+
     }
 }

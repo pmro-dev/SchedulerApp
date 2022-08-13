@@ -1,5 +1,4 @@
 ﻿var routeURL = location.protocol + "//" + location.host;
-
 $(document).ready(function () {
     $("#appointmentDate").kendoDateTimePicker({
         value: new Date(),
@@ -8,69 +7,63 @@ $(document).ready(function () {
 
     InitializeCalendar();
 });
-
+var calendar;
 function InitializeCalendar() {
-
     try {
 
+
         var calendarEl = document.getElementById('calendar');
-
         if (calendarEl != null) {
-
-            calendar = new FullCalendar.Calendar(calendarEl,
-                {
-                    initialView: 'dayGridMonth',
-
-                    headerToolbar: {
-                        left: 'prev,next,today',
-                        center: 'title',
-                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                    },
-
-                    selectable: true,
-                    editable: false,
-
-                    select: function (event) {
-                        onShowModal(event, null);
-                    },
-
-                    eventDisplay: 'block',
-
-                    events: function (fetchInfo, successCallback, failureCallback) {
-                        $.ajax({
-                            url: routeURL + '/api/Appointment/GetCalendarData?userId=' + $("#doctorId").val(),
-                            type: 'GET',
-                            dataType: 'JSON',
-                            success: function (response) {
-                                var eventsDataCollection = [];
-                                if (response.status === 1) {
-                                    $.each(response.dataenum, function (iterator, eventObj) {
-                                        eventsDataCollection.push({
-                                            title: eventObj.title,
-                                            description: eventObj.description,
-                                            start: eventObj.startDate,
-                                            end: eventObj.endDate,
-                                            backgroundColor: eventObj.isDoctorApproved ? "#28a745" : "#dc3545",
-                                            textColor: "white",
-                                            id: eventObj.id
-                                        });
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next,today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                selectable: true,
+                editable: false,
+                select: function (event) {
+                    onShowModal(event, null);
+                },
+                eventDisplay: 'block',
+                events: function (fetchInfo, successCallback, failureCallback) {
+                    $.ajax({
+                        url: routeURL + '/api/Appointment/GetCalendarData?doctorId=' + $("#doctorId").val(),
+                        type: 'GET',
+                        dataType: 'JSON',
+                        success: function (response) {
+                            var events = [];
+                            if (response.status === 1) {
+                                $.each(response.dataenum, function (i, data) {
+                                    events.push({
+                                        title: data.title,
+                                        description: data.description,
+                                        start: data.startDate,
+                                        end: data.endDate,
+                                        backgroundColor: data.isDoctorApproved ? "#28a745" : "#dc3545",
+                                        borderColor: "#162466",
+                                        textColor: "white",
+                                        id: data.id
                                     });
-                                }
-                                successCallback(eventsDataCollection);
-                            },
-                            error: function (xhr) {
-                                $.notify("Error", "error");
+                                })
                             }
-                        });
-                    }
-                });
+                            successCallback(events);
+                        },
+                        error: function (xhr) {
+                            $.notify("Error1", "error");
+                        }
+                    });
+                }
+            });
             calendar.render();
         }
-    }
 
+    }
     catch (e) {
         alert(e);
     }
+
 }
 
 
@@ -83,7 +76,7 @@ function onCloseModal() {
     $("#appointmentInput").modal("hide");
 }
 
-function onSubmiteForm() {
+function onSubmitForm() {
     if (checkValidation()) {
         var requestData = {
             Id: parseInt($("#id").val()),
@@ -92,7 +85,7 @@ function onSubmiteForm() {
             StartDate: $("#appointmentDate").val(),
             Duration: $("#duration").val(),
             DoctorId: $("#doctorId").val(),
-            PatientId: $("#patientId").val()
+            PatientId: $("#patientId").val(),
         };
 
         $.ajax({
@@ -102,9 +95,11 @@ function onSubmiteForm() {
             contentType: 'application/json',
             success: function (response) {
                 if (response.status === 1 || response.status === 2) {
+                    calendar.refetchEvents();
                     $.notify(response.message, "success");
                     onCloseModal();
-                } else {
+                }
+                else {
                     $.notify(response.message, "error");
                 }
             },
@@ -116,26 +111,23 @@ function onSubmiteForm() {
 }
 
 function checkValidation() {
-
     var isValid = true;
-
-    if ($("#title").val() === undefined || $("title").val() === "") {
+    if ($("#title").val() === undefined || $("#title").val() === "") {
         isValid = false;
         $("#title").addClass('error');
     }
     else {
-        isValid = true;
         $("#title").removeClass('error');
     }
 
-    if ($("#appointmentDate").val() === undefined || $("appointmentDate").val() === "") {
+    if ($("#appointmentDate").val() === undefined || $("#appointmentDate").val() === "") {
         isValid = false;
-        $("appointmentDate").addClass('error');
+        $("#appointmentDate").addClass('error');
     }
     else {
-        isValid = true;
-        $("appointmentDate").removeClass('error');
+        $("#appointmentDate").removeClass('error');
     }
 
     return isValid;
+
 }

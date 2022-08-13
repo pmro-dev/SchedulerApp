@@ -14,8 +14,13 @@ namespace SchedulerApp.Services
 
         public Task<int> AddOrUpdate(AppointmentViewModel appointmentVM);
 
-        public List<AppointmentViewModel> DoctorsEventsById(string doctorId);
         public List<AppointmentViewModel> PatientsEventsById(string patientId);
+        public AppointmentViewModel GetById(int id);
+        public List<AppointmentViewModel> DoctorsEventsById(string doctorId);
+
+        //public List<AppointmentViewModel> DoctorsEventsById(string doctorId);
+        //public List<AppointmentViewModel> PatientsEventsById(string patientId);
+        //public AppointmentViewModel EventById(int eventId);
 
     }
 }
