@@ -47,43 +47,6 @@ namespace SchedulerApp.Services
             return patients;
         }
 
-
-        public IEnumerable<SelectListItem> GetDoctorsSelectListItem()
-        {
-            //var doctors = _db.Users.Select(user => new SelectListItem
-            //{
-            //    Text = user.Name,
-            //    Value = user.Id
-            //}).Where();
-
-            var doctors = (from user in _db.Users
-                           join userRoles in _db.UserRoles on user.Id equals userRoles.UserId
-                           join roles in _db.Roles.Where(x => x.Name == Helper.Doctor) on userRoles.RoleId equals roles.Id
-                           select new SelectListItem
-                           {
-                               Text = new StringBuilder(new String(user.Name + " " + roles.Name)).ToString(),
-                               Value = user.Id
-                           }
-                           ).ToList();
-
-            return doctors;
-        }
-
-        public IEnumerable<SelectListItem> GetPatientsSelectListItem()
-        {
-            var patients = (from user in _db.Users
-                           join userRoles in _db.UserRoles on user.Id equals userRoles.UserId
-                           join roles in _db.Roles.Where(x => x.Name == Helper.Doctor) on userRoles.RoleId equals roles.Id
-                           select new SelectListItem
-                           {
-                               Text = new StringBuilder(new String(user.Name + " " + roles.Name)).ToString(),
-                               Value = user.Id
-                           }
-                           ).ToList();
-
-            return patients;
-        }
-
         public async Task<int> AddOrUpdate(AppointmentViewModel appointmentVM)
         {
             var startDate = DateTime.Parse(appointmentVM.StartDate);
