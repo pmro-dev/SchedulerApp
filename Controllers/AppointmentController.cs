@@ -14,10 +14,12 @@ namespace SchedulerApp.Controllers
         }
         public IActionResult Index()
         {
-           //ViewBag.DoctorsList =  _appointmentService.GetDoctorsList();
-           ViewBag.DoctorsList =  _appointmentService.GetDoctorsSelectListItem();
-           ViewBag.PatientsList =  _appointmentService.GetPatientsSelectListItem();
-           ViewBag.Duration = Helper.GetTimeDropDown();
+            //ViewBag.DoctorsList =  _appointmentService.GetDoctorsList();
+            //ViewBag.DoctorsList =  _appointmentService.GetDoctorsSelectListItem();
+            //ViewBag.PatientsList =  _appointmentService.GetPatientsSelectListItem();
+            ViewBag.DoctorsList = _appointmentService.GetDoctorsList();
+            ViewBag.PatientsList = _appointmentService.GetPatientsList();
+            ViewBag.Duration = Helper.GetTimeDropDown();
 
             return View();
         }
