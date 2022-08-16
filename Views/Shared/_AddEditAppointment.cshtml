@@ -24,8 +24,8 @@
 
 						@* option #2 *@
 						<select class="form-control" id="patientId">
-							@foreach (var patient in (ViewBag.PatientsList as IEnumerable<SelectListItem>)) {
-								<option value="SELECT" data-description="">@patient.Text</option>
+							@foreach (var patient in (ViewBag.PatientsList as IEnumerable<SchedulerApp.Models.ViewModels.PatientVM>)) {
+								<option value="@patient.Id" data-description="">@patient.Name</option>
 							}
 						</select>
 					</div>
@@ -37,7 +37,7 @@
 						<label for="title">Duration</label>
 						<select class="form-control" id="duration">
 							@foreach (var duration in (ViewBag.Duration as IEnumerable<SelectListItem>)) {
-								<option value="SELECT" data-description="">@duration.Text</option>
+								<option value="@duration.Value" data-description="">@duration.Text</option>
 							}
 						</select>
 					</div>
