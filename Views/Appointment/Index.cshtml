@@ -1,4 +1,7 @@
 ﻿@model SchedulerApp.Models.ViewModels.DoctorVM
+@using Microsoft.AspNetCore.Http
+@using SchedulerApp.Utility
+@inject IHttpContextAccessor HttpContextAccessor
 
 <div class="row">
 	<div class="container">
@@ -27,3 +30,7 @@
 </div>
 
 <partial name="_AddEditAppointment" />
+
+<div class="text-right p-2">
+	<p>@HttpContextAccessor.HttpContext.Session.GetString(Helper.ssuserName)'s welcome</p>
+</div>
