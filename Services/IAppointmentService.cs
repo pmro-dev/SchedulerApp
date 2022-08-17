@@ -16,6 +16,9 @@ namespace SchedulerApp.Services
         public AppointmentViewModel GetById(int id);
         public List<AppointmentViewModel> DoctorsEventsById(string doctorId);
 
+        public Task<int> ConfirmEvent(int appointmentId);
+        public Task<int> DeleteEvent(int appointmentId);
+
         //public List<AppointmentViewModel> DoctorsEventsById(string doctorId);
         //public List<AppointmentViewModel> PatientsEventsById(string patientId);
         //public AppointmentViewModel EventById(int eventId);

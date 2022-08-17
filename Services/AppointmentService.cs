@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SchedulerApp.Models;
 using SchedulerApp.Models.ViewModels;
 using SchedulerApp.Utility;
@@ -55,6 +56,17 @@ namespace SchedulerApp.Services
             if (appointmentVM != null && appointmentVM.Id > 0)
             {
                 // UPDATE
+                var appointment = _db.Appointments.FirstOrDefault(x => x.Id == appointmentVM.Id);
+                appointment.Title = appointmentVM.Title;
+                appointment.Description = appointmentVM.Description;
+                appointment.StartDate = startDate;
+                appointment.EndDate = endDate;
+                appointment.Duration = appointmentVM.Duration;
+                appointment.DoctorId = appointmentVM.DoctorId;
+                appointment.PatientId = appointmentVM.PatientId;
+                appointment.IsDoctorApproved = false;
+                appointment.AdminId = appointmentVM.AdminId;
+                await _db.SaveChangesAsync();
                 return 1;
             }
             else
@@ -123,6 +135,33 @@ namespace SchedulerApp.Services
                 Duration = c.Duration,
                 IsDoctorApproved = c.IsDoctorApproved
             }).ToList();
+        }
+
+        public async Task<int> ConfirmEvent(int appointmentId)
+        {
+            var appointmentToConfirm = _db.Appointments.FirstOrDefault(appointmentFromDB => appointmentFromDB.Id == appointmentId);
+            
+            if (appointmentToConfirm != null)
+            {
+                appointmentToConfirm.IsDoctorApproved = true;
+                _db.Update(appointmentToConfirm);
+                await _db.SaveChangesAsync();
+                return 1;
+            }
+            
+            return 0;
+        }
+
+        public async Task<int> DeleteEvent(int appointmentId)
+        {
+            var appointmentToDelete = _db.Appointments.FirstOrDefault(appointmentFromDB => appointmentFromDB.Id == appointmentId);
+            if (appointmentToDelete != null)
+            {
+                _db.Appointments.Remove(appointmentToDelete);
+                await _db.SaveChangesAsync();
+                return 1;
+            }
+            return 0;
         }
 
         //public List<AppointmentViewModel> DoctorsEventsById(string doctorId)
