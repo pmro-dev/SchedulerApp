@@ -7,6 +7,7 @@ using SchedulerApp.Utility;
 using System;
 using System.Collections.Generic;
 using SchedulerApp.Models;
+using System.Threading.Tasks;
 
 namespace SchedulerApp.Controllers.Api
 {
@@ -95,10 +96,55 @@ namespace SchedulerApp.Controllers.Api
             CommonResponse<AppointmentViewModel> commonResponse = new CommonResponse<AppointmentViewModel>();
             try
             {
-
                 commonResponse.dataenum = _appointmentService.GetById(id);
                 commonResponse.status = Helper.success_code;
 
+            }
+            catch (Exception e)
+            {
+                commonResponse.message = e.Message;
+                commonResponse.status = Helper.failure_code;
+            }
+            return Ok(commonResponse);
+        }
+
+        [HttpGet]
+        [Route("ConfirmAppointment/{id}")]
+        public IActionResult ConfirmAppointment(int id)
+        {
+            CommonResponse<int> commonResponse = new CommonResponse<int>();
+            try
+            {
+                var result = _appointmentService.ConfirmEvent(id).Result;
+                if (result > 0)
+                {
+                    commonResponse.status = Helper.success_code;
+                    commonResponse.message = Helper.meetingConfirm;
+                }
+                else
+                {
+                    commonResponse.status = Helper.failure_code;
+                    commonResponse.message = Helper.meetingConfirmError;
+                }
+
+            }
+            catch (Exception e)
+            {
+                commonResponse.message = e.Message;
+                commonResponse.status = Helper.failure_code;
+            }
+            return Ok(commonResponse);
+        }
+
+        [HttpGet]
+        [Route("DeleteAppointment/{id}")]
+        public async Task<IActionResult> DeleteAppointment(int id)
+        {
+            CommonResponse<int> commonResponse = new CommonResponse<int>();
+            try
+            {
+                commonResponse.status = await _appointmentService.DeleteEvent(id);
+                commonResponse.message = commonResponse.status == 1 ? Helper.appointmentDeleted : Helper.somethingWentWrong;
             }
             catch (Exception e)
             {
