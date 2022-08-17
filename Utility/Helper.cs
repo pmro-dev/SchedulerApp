@@ -20,6 +20,7 @@ namespace SchedulerApp.Utility
         public static string somethingWentWrong = "Something went wront, Please try again.";
         public static int success_code = 1;
         public static int failure_code = 0;
+        public static string ssuserName = "ssuserName";
 
         public static List<SelectListItem> GetRolesForDropDown()
         {

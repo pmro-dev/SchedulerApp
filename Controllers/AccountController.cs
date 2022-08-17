@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SchedulerApp.Models;
 using SchedulerApp.Models.ViewModels;
@@ -28,20 +29,23 @@ namespace SchedulerApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel viewModel)
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(viewModel.Email, viewModel.Password, viewModel.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, loginViewModel.RememberMe, false);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByEmailAsync(loginViewModel.Email);
+                    HttpContext.Session.SetString(Helper.ssuserName, user.Name);
+                    //var userName = HttpContext.Session.GetString("ssuserName");
                     return RedirectToAction("Index","Appointment");
                 }
 
                 ModelState.AddModelError("", "Invalid login attempt");
 
             }
-            return View(viewModel);
+            return View(loginViewModel);
         }
 
         public async Task<IActionResult> Register()
